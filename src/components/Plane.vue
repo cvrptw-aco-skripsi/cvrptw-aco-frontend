@@ -1,17 +1,6 @@
 <template>
   <div>
-    <!-- <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/jsxgraph@1.4.0/distrib/jsxgraph.css"
-    /> -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/jsxgraph@1.1.0/distrib/jsxgraph.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <!-- The next line is optional: MathJax -->
-
+    <!-- <link href="https://cdn.jsdelivr.net/npm/jsxgraph@1.1.0/distrib/jsxgraph.css" rel="stylesheet" type="text/css" /> -->
     <div id="jxgbox" class="jxgbox"></div>
   </div>
 </template>
@@ -19,11 +8,19 @@
 <script>
 export default {
   name: "Plane",
-  props: {},
   data() {
     return {
       board: null,
+      franchiseeNodeList: [],
     };
+  },
+  computed: {
+    timeWindowList() {
+      return this.$store.getters.timeWindows;
+    },
+    franchiseeList() {
+      return this.$store.getters.franchisees;
+    },
   },
   methods: {
     getMouseCoords(e, i) {
@@ -57,22 +54,49 @@ export default {
       }
 
       if (canCreate) {
-        this.board.create("point", [coords.usrCoords[1], coords.usrCoords[2]]);
+        let franchisee = {
+          x: coords.usrCoords[1].toFixed(2),
+          y: coords.usrCoords[2].toFixed(2),
+          timeWindowIndex: 0,
+        };
+        this.$root.$emit("addFranchisee", franchisee);
       }
+    },
+    createFranchiseeNode(id, x, y) {
+      id = parseInt(id);
+      x = parseFloat(x).toFixed(2);
+      y = parseFloat(y).toFixed(2);
+      let newFranchiseeNode = this.board.create("point", [x, y], {
+        name: "Franchisee " + id,
+        size: 5,
+        color: "FF0000",
+      });
+      this.franchiseeNodeList.push(newFranchiseeNode);
     },
   },
   mounted() {
     this.board = window.JSXGraph.initBoard("jxgbox", {
-      boundingbox: [-5, 5, 5, -5],
+      boundingbox: [-7, 5, 7, -5],
       axis: true,
     });
-    this.board.create("point", [-2, -1], {
-      name: "first",
-      size: 5,
-      color: "FF0000",
-    });
-    this.board.create("point", [3, 1], { name: "last", fixed: true, face: "[]" });
+
+    // Create Franchisee Nodes
+    for (const franchisee of this.franchiseeList) {
+      this.createFranchiseeNode(franchisee.id, franchisee.x, franchisee.y);
+    }
+
+    this.board.create("point", [0, 0], { name: "Depot", fixed: true, face: "[]" });
     this.board.on("down", this.down);
+  },
+  watch: {
+    franchiseeList: function (newFranchiseeList) {
+      for (const franchisee of this.franchiseeNodeList) {
+        this.board.removeObject(franchisee);
+      }
+      for (const franchisee of newFranchiseeList) {
+        this.createFranchiseeNode(franchisee.id, franchisee.x, franchisee.y);
+      }
+    },
   },
 };
 </script>
@@ -82,7 +106,7 @@ export default {
 .jxgbox {
   margin-left: auto;
   margin-right: auto;
-  width: 500px;
+  width: 100%;
   height: 500px;
 }
 </style>
