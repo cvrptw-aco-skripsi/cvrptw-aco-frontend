@@ -12,4 +12,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.inner-card {
+  margin: 20px;
+  padding: 10px 20px;
+}
+.vertical-center {
+  display: flex;
+  align-items: center;
+}
 </style>
