@@ -4,6 +4,7 @@ module.exports = {
   },
   // devServer Options don't belong into `configureWebpack`
   devServer: {
-    port: 8081,
+    port: 8080,
+    proxy: "http://localhost:8081",
   },
 };
