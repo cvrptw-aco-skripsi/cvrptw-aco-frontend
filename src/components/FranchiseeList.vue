@@ -8,21 +8,28 @@
           <v-row>
             <v-col cols="11">
               <v-row>
-                <v-col col="2">
+                <v-col col="3">
                   <v-text-field
                     label="x position"
                     v-model="franchiseeList[index].x"
                     @blur="updateFranchiseeInVuex()"
                   ></v-text-field>
                 </v-col>
-                <v-col col="2">
+                <v-col col="3">
                   <v-text-field
                     label="y position"
                     v-model="franchiseeList[index].y"
                     @blur="updateFranchiseeInVuex()"
                   ></v-text-field>
                 </v-col>
-                <v-col col="8">
+                <v-col col="2">
+                  <v-text-field
+                    label="demand"
+                    v-model="franchiseeList[index].demand"
+                    @blur="updateFranchiseeInVuex()"
+                  ></v-text-field>
+                </v-col>
+                <v-col col="4">
                   <v-select
                     v-model="franchiseeList[index].timeWindowIndex"
                     :items="timeWindowList"
@@ -50,9 +57,9 @@ export default {
   data() {
     return {
       franchiseeList: [
-        { x: "1", y: "3.3", timeWindowIndex: 0 },
-        { x: "4.0", y: "-3.6", timeWindowIndex: 1 },
-        { x: "-3.2", y: "4.1", timeWindowIndex: 2 },
+        { x: 1, y: 3.3, demand: 3.3, timeWindowIndex: 0 },
+        { x: 4.0, y: -3.6, demand: 4.0, timeWindowIndex: 1 },
+        { x: -3.2, y: 4.1, demand: 3.7, timeWindowIndex: 2 },
       ],
       timeWindowList: this.$store.getters.timeWindows,
     };
