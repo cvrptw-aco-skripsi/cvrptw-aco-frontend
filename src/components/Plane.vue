@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/jsxgraph@1.1.0/distrib/jsxgraph.css" rel="stylesheet" type="text/css" /> -->
     <div id="jxgbox" class="jxgbox"></div>
   </div>
 </template>
@@ -11,7 +10,9 @@ export default {
   data() {
     return {
       board: null,
+      depot: null,
       franchiseeNodeList: [],
+      lineList: [],
     };
   },
   computed: {
@@ -57,6 +58,7 @@ export default {
         let franchisee = {
           x: coords.usrCoords[1].toFixed(2),
           y: coords.usrCoords[2].toFixed(2),
+          demand: 1,
           timeWindowIndex: 0,
         };
         this.$root.$emit("addFranchisee", franchisee);
@@ -73,6 +75,18 @@ export default {
       });
       this.franchiseeNodeList.push(newFranchiseeNode);
     },
+    drawLine(franchisee1, franchisee2, color) {
+      let newLine = this.board.create("line", [franchisee1, franchisee2], {
+        straightFirst: false,
+        straightLast: false,
+        strokeColor: color,
+      });
+      this.lineList.push(newLine);
+    },
+    generateRandomHexColorCode() {
+      let n = (Math.random() * 0xfffff * 1000000).toString(16);
+      return "#" + n.slice(0, 6);
+    },
   },
   mounted() {
     this.board = window.JSXGraph.initBoard("jxgbox", {
@@ -85,8 +99,40 @@ export default {
       this.createFranchiseeNode(franchisee.id, franchisee.x, franchisee.y);
     }
 
-    this.board.create("point", [0, 0], { name: "Depot", fixed: true, face: "[]" });
+    this.depot = this.board.create("point", [0, 0], { name: "Depot", fixed: true, face: "[]" });
     this.board.on("down", this.down);
+  },
+  created() {
+    this.$root.$on("apiResponse", (data) => {
+      if (!data.solution?.includes("NOT_FOUND")) {
+        const vehicles = data.vehicles;
+        for (const vehicle of vehicles) {
+          console.log("new vehicle");
+          const color = this.generateRandomHexColorCode();
+          const nodeList = vehicle.nodes;
+          let sourceNode;
+          let targetNode;
+          for (let index = 1; index < nodeList.length; index++) {
+            if (nodeList[index - 1].id == 0) {
+              sourceNode = this.depot;
+            } else {
+              sourceNode = this.franchiseeNodeList[nodeList[index - 1].id - 1];
+            }
+
+            if (nodeList[index].id == 0) {
+              targetNode = this.depot;
+            } else {
+              targetNode = this.franchiseeNodeList[nodeList[index].id - 1];
+            }
+            // console.log(nodeList[index]);
+            this.drawLine(sourceNode, targetNode, color);
+          }
+        }
+
+        console.log("test");
+        console.log(vehicles);
+      }
+    });
   },
   watch: {
     franchiseeList: function (newFranchiseeList) {
