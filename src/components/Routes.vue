@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="generated-routes">
     <v-card v-show="!apiError && !!numberOfUsedVehicle" id="routes-card" color="#ddedea">
       <h2>Generated Routes</h2>
       <p>Number of used trucks: &emsp; {{ numberOfUsedVehicle }}</p>
@@ -62,7 +62,9 @@ export default {
     },
     scrollDownToPageBottom() {
       setTimeout(() => {
-        window.scrollTo(0, document.body.scrollHeight);
+        document.querySelector("#generated-routes").scrollIntoView({
+          behavior: "smooth",
+        });
       }, 100);
     },
   },
