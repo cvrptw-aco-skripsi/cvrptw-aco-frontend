@@ -285,10 +285,13 @@ export default {
       );
     },
     getSamples() {
-      this.$store.dispatch("setTimeWindows", this.samples[3].timeWindowList);
-      this.$store.dispatch("setFranchisees", this.samples[3].franchiseeList);
-      this.$store.dispatch("setTruckCapacity", this.samples[3].truckCapacity);
-      this.$store.dispatch("setNumberOfTrucks", this.samples[3].numberOfTrucks);
+      const min = 0;
+      const max = 4;
+      const randomIndex = Math.floor(Math.random() * (max - min + 1)) + min;
+      this.$store.dispatch("setTimeWindows", this.samples[randomIndex].timeWindowList);
+      this.$store.dispatch("setFranchisees", this.samples[randomIndex].franchiseeList);
+      this.$store.dispatch("setTruckCapacity", this.samples[randomIndex].truckCapacity);
+      this.$store.dispatch("setNumberOfTrucks", this.samples[randomIndex].numberOfTrucks);
     },
   },
 };
