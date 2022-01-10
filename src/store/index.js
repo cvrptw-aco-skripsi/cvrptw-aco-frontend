@@ -5,11 +5,12 @@ import * as Cookies from "js-cookie";
 
 import timeWindow from "./modules/timeWindow";
 import franchisee from "./modules/franchisee";
+import truck from "./modules/truck";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: { timeWindow, franchisee },
+  modules: { timeWindow, franchisee, truck },
   plugins: [
     createPersistedState({
       // storage: window.sessionStorage,
