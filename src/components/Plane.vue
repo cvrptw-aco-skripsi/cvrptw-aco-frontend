@@ -66,11 +66,11 @@ export default {
     },
     createFranchiseeNode(id, x, y) {
       id = parseInt(id);
-      x = parseFloat(x).toFixed(2);
-      y = parseFloat(y).toFixed(2);
-      let newFranchiseeNode = this.board.create("point", [x, y], {
+      const xPos = parseFloat(x).toFixed(2);
+      const yPos = parseFloat(y).toFixed(2);
+      let newFranchiseeNode = this.board.create("point", [xPos, yPos], {
         name: "Franchisee " + id,
-        size: 5,
+        size: 3,
         color: "FF0000",
       });
       this.franchiseeNodeList.push(newFranchiseeNode);
@@ -107,7 +107,6 @@ export default {
       if (!data.solution?.includes("NOT_FOUND")) {
         const vehicles = data.vehicles;
         for (const vehicle of vehicles) {
-          console.log("new vehicle");
           const color = this.generateRandomHexColorCode();
           const nodeList = vehicle.nodes;
           let sourceNode;
@@ -118,19 +117,14 @@ export default {
             } else {
               sourceNode = this.franchiseeNodeList[nodeList[index - 1].id - 1];
             }
-
             if (nodeList[index].id == 0) {
               targetNode = this.depot;
             } else {
               targetNode = this.franchiseeNodeList[nodeList[index].id - 1];
             }
-            // console.log(nodeList[index]);
             this.drawLine(sourceNode, targetNode, color);
           }
         }
-
-        console.log("test");
-        console.log(vehicles);
       }
     });
   },
@@ -139,6 +133,7 @@ export default {
       for (const franchisee of this.franchiseeNodeList) {
         this.board.removeObject(franchisee);
       }
+      this.franchiseeNodeList = [];
       for (const franchisee of newFranchiseeList) {
         this.createFranchiseeNode(franchisee.id, franchisee.x, franchisee.y);
       }

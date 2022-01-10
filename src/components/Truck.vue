@@ -236,6 +236,7 @@ export default {
         return timeWindow;
       });
 
+      console.log("Request object..");
       console.log({
         timeWindows: timeWindowList,
         nodes: this.franchiseeList,
@@ -260,11 +261,13 @@ export default {
           }
         )
         .then((res) => {
+          console.log("Successful response data..");
           console.log(res.data.data);
           this.$root.$emit("apiResponse", res.data.data);
           this.resetInput();
         })
         .catch((err) => {
+          console.log("Failed response data..");
           console.log(err.response);
           this.$root.$emit("apiResponse", err.response.data.errors);
         });
