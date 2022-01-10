@@ -3,7 +3,7 @@
     <v-card v-show="!apiError && !!numberOfUsedVehicle" id="routes-card" color="#ddedea">
       <h2>Generated Routes</h2>
       <p>Number of used trucks: &emsp; {{ numberOfUsedVehicle }}</p>
-      <p>Total distance: &emsp;&emsp;&emsp;&emsp;&emsp; {{ totalDistance }}</p>
+      <p>Total distance: &emsp;&emsp;&emsp;&emsp;&emsp; {{ totalDistance.toFixed(2) }} km</p>
       <v-list two-line color="#e9f7f5">
         <div v-for="(vehicle, index) in vehicles" :key="index">
           <v-divider v-if="index !== 0" :key="index"></v-divider>
