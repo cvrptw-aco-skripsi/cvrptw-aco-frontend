@@ -54,15 +54,13 @@
 export default {
   name: "FranchiseeList",
   props: {},
-  data() {
-    return {
-      franchiseeList: [
-        { x: 1, y: 3.3, demand: 3.3, timeWindowIndex: 0 },
-        { x: 4.0, y: -3.6, demand: 4.0, timeWindowIndex: 1 },
-        { x: -3.2, y: 4.1, demand: 3.7, timeWindowIndex: 2 },
-      ],
-      timeWindowList: this.$store.getters.timeWindows,
-    };
+  computed: {
+    franchiseeList() {
+      return this.$store.getters.franchisees;
+    },
+    timeWindowList() {
+      return this.$store.getters.timeWindows;
+    },
   },
   methods: {
     getTimeWindowText(timeWindowObject) {

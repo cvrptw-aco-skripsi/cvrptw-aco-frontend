@@ -38,14 +38,10 @@
 export default {
   name: "TimeWindowList",
   props: {},
-  data() {
-    return {
-      timeWindowList: [
-        { startTime: "12.00", endTime: "15.00" },
-        { startTime: "15.00", endTime: "18.00" },
-        { startTime: "18.00", endTime: "21.00" },
-      ],
-    };
+  computed: {
+    timeWindowList() {
+      return this.$store.getters.timeWindows;
+    },
   },
   methods: {
     removeTimeWindow(index) {
