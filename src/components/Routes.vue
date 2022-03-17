@@ -10,6 +10,7 @@
           <v-list-item>
             <div>
               <h3>Truck {{ index + 1 }}</h3>
+              <v-icon size="20" class="truck-color-icon pb-1 pl-2">mdi-circle</v-icon>
               <p>Routes: {{ getNodesInString(vehicle.nodes) }}</p>
               <p>Arrival Times: {{ getArrivalTimesInString(vehicle.arrivalTimes) }}</p>
             </div>
@@ -94,6 +95,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+h3 {
+  display: inline;
+}
 h2,
 p {
   margin-bottom: 8px !important;

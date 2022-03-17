@@ -105,26 +105,36 @@ export default {
   created() {
     this.$root.$on("apiResponse", (data) => {
       if (!data.solution?.includes("NOT_FOUND")) {
-        const vehicles = data.vehicles;
-        for (const vehicle of vehicles) {
-          const color = this.generateRandomHexColorCode();
-          const nodeList = vehicle.nodes;
-          let sourceNode;
-          let targetNode;
-          for (let index = 1; index < nodeList.length; index++) {
-            if (nodeList[index - 1].id == 0) {
-              sourceNode = this.depot;
-            } else {
-              sourceNode = this.franchiseeNodeList[nodeList[index - 1].id - 1];
+        setTimeout(() => {
+          const vehicles = data.vehicles;
+          let truckColorIconElements = document.getElementsByClassName("truck-color-icon");
+          console.log("truckColorIconElements");
+          console.log(truckColorIconElements);
+          console.log(truckColorIconElements.length);
+          let index = 0;
+          for (const vehicle of vehicles) {
+            const color = this.generateRandomHexColorCode();
+            truckColorIconElements[index].style.color = color;
+
+            const nodeList = vehicle.nodes;
+            let sourceNode;
+            let targetNode;
+            for (let index = 1; index < nodeList.length; index++) {
+              if (nodeList[index - 1].id == 0) {
+                sourceNode = this.depot;
+              } else {
+                sourceNode = this.franchiseeNodeList[nodeList[index - 1].id - 1];
+              }
+              if (nodeList[index].id == 0) {
+                targetNode = this.depot;
+              } else {
+                targetNode = this.franchiseeNodeList[nodeList[index].id - 1];
+              }
+              this.drawLine(sourceNode, targetNode, color);
             }
-            if (nodeList[index].id == 0) {
-              targetNode = this.depot;
-            } else {
-              targetNode = this.franchiseeNodeList[nodeList[index].id - 1];
-            }
-            this.drawLine(sourceNode, targetNode, color);
+            index++;
           }
-        }
+        }, 500);
       }
     });
   },
