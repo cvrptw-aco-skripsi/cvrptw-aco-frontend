@@ -85,6 +85,24 @@ export default {
         },
         {
           timeWindowList: [
+            { startTime: "08.00", endTime: "12.00" },
+            { startTime: "12.00", endTime: "16.00" },
+            { startTime: "16.00", endTime: "20.00" },
+          ],
+          franchiseeList: [
+            { x: -4.56, y: 3.07, demand: 3.2, timeWindowIndex: 0 },
+            { x: -6.01, y: -1.15, demand: 3.1, timeWindowIndex: 1 },
+            { x: -4.69, y: -3.02, demand: 2.7, timeWindowIndex: 0 },
+            { x: -0.83, y: -4.09, demand: 0.6, timeWindowIndex: 2 },
+            { x: 5.22, y: -1.04, demand: 2.7, timeWindowIndex: 1 },
+            { x: 0.13, y: 4.48, demand: 1.5, timeWindowIndex: 2 },
+            { x: -3.19, y: 3.8, demand: 1.1, timeWindowIndex: 1 },
+          ],
+          truckCapacity: 10,
+          numberOfTrucks: 8,
+        },
+        {
+          timeWindowList: [
             { startTime: "08.30", endTime: "12.00" },
             { startTime: "12.00", endTime: "15.30" },
           ],
@@ -287,7 +305,8 @@ export default {
     getSamples() {
       const min = 0;
       const max = 4;
-      const randomIndex = Math.floor(Math.random() * (max - min + 1)) + min;
+      let randomIndex = Math.floor(Math.random() * (max - min + 1)) + min;
+      // randomIndex = 1;
       this.$store.dispatch("setTimeWindows", this.samples[randomIndex].timeWindowList);
       this.$store.dispatch("setFranchisees", this.samples[randomIndex].franchiseeList);
       this.$store.dispatch("setTruckCapacity", this.samples[randomIndex].truckCapacity);
